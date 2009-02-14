@@ -1,0 +1,71 @@
+<?
+
+if($_POST) {
+
+	function as_save_option($option) {
+		if($_POST['options'][$option]) {
+			if ( get_option($option) ) {
+			    update_option($option, $_POST['options'][$option]);
+			  } else {
+			    add_option($option, $_POST['options'][$option]);
+			  }
+		}
+	}
+	
+	foreach($_POST['options'] as $option=>$value) {
+		as_save_option($option);
+	}
+?>	
+	<div id="message" class="updated fade"><p><strong>Options saved.</strong></p></div>	
+<?
+}
+
+?>
+
+<div class="wrap"> 
+	<div id="icon-options-general" class="icon32"><br /></div> 
+<h2>Abstracts Options</h2> 
+ 
+<form method="post" action="<?=$_SERVER['REQUEST_URI']?>"> 
+
+<table class="form-table"> 
+	<tr valign="top"> 
+		<th scope="row"><label for="options[abstracts_chars_count]">Abstract Chars Number</label></th> 
+		<td><input name="options[abstracts_chars_count]" type="text" id="charscount" value="<?=get_option('abstracts_chars_count');?>" class="regular-text" /></td> 
+	</tr> 
+	<tr valign="top"> 
+		<th scope="row"><label for="options[abstracts_permitted_attachments]">Permitted Attachments</label></th> 
+		<td><input name="options[abstracts_permitted_attachments]" type="text" id="charscount" value="<?=get_option('abstracts_permitted_attachments');?>" class="regular-text" /></td> 
+	</tr>
+	<tr valign="top"> 
+		<th scope="row"><label for="options[abstracts_maximum_attach_size]">Maximum Attach Size</label></th> 
+		<td><input name="options[abstracts_maximum_attach_size]" type="text" id="charscount" value="<?=get_option('abstracts_maximum_attach_size');?>" class="regular-text" /></td> 
+	</tr>
+	<tr valign="top"> 
+		<th scope="row"><label for="options[abstracts_body_style]">Body Style (CSS)</label></th> 
+		<td><textarea class="large-text code" cols="50" rows="10" name="options[abstracts_body_style]"><?=stripslashes(get_option('abstracts_body_style'));?></textarea></td> 
+	</tr> 
+	<tr valign="top"> 
+		<th scope="row"><label for="options[abstracts_title_style]">Title Style (CSS)</label></th> 
+		<td><textarea class="large-text code" cols="50" rows="10" name="options[abstracts_title_style]"><?=stripslashes(get_option('abstracts_title_style'));?></textarea></td> 
+	</tr>
+	<tr valign="top"> 
+		<th scope="row"><label for="options[abstracts_authors_style]">Authors Style (CSS)</label></th> 
+		<td><textarea class="large-text code" cols="50" rows="10" name="options[abstracts_authors_style]"><?=stripslashes(get_option('abstracts_authors_style'));?></textarea></td> 
+	</tr> 
+	<tr valign="top"> 
+		<th scope="row"><label for="options[abstracts_affiliation_style]">Author Affiliation Style (CSS)</label></th> 
+		<td><textarea class="large-text code" cols="50" rows="10" name="options[abstracts_affiliation_style]"><?=stripslashes(get_option('abstracts_affiliation_style'));?></textarea></td> 
+	</tr> 
+	<tr valign="top"> 
+		<th scope="row"><label for="options[abstracts_text_style]">Text Style (CSS)</label></th> 
+		<td><textarea class="large-text code" cols="50" rows="10" name="options[abstracts_text_style]"><?=stripslashes(get_option('abstracts_text_style'));?></textarea></td> 
+	</tr> 
+</table> 
+ 
+<p class="submit"> 
+<input type="submit" name="Submit" class="button-primary" value="Save options" /> 
+</p> 
+</form> 
+ 
+</div>
