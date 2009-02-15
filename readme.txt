@@ -10,7 +10,7 @@ Abstract Submission let you add an abstract submission form to your meeting webs
 
 == Description ==
 
-With Abstract Submission you can add an abstract submission form to your meeting website. Belowe the main features:
+With Abstract Submission you can add an abstract submission form to your meeting website. Below the main features:
 
 * Abstract upload with an easy comprehensive form
 * Add more coauthors
