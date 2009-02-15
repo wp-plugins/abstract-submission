@@ -2,17 +2,31 @@
 /*
 Plugin Name: Abstract Submission
 Plugin URI: 
-Description: 
-Version: 0.1
+Description: Abstract Submission let you add an abstract submission form to your meeting website.
+Version: 0.2
 Author: Marco Piccardo
 Author URI: http://www.xgear.info/
 */
 
 /* Changelog - Release Notes
+
+* v0.2
+- First Public Version.
+
 * v0.1
 - First non-Public Version.
+
 */
 
+/* Usage
+
+You can use those tags in your pages:
+
+* [abstract-submission-form] to display the form
+* [abstract-submission-chars-count] to print the maximum abstract lenght (chars)
+* [abstract-submission-max-attach-size] for the maximum attachment size (kb)
+
+*/
 // Admin Panel
 global $wpdb;
 add_action('admin_menu', 'abstracts_add_pages');
@@ -48,7 +62,11 @@ function abstracts_submission_page($content) {
 	$html = ob_get_clean();
 	$tags = array('[abstract-submission-form]','[abstract-submission-chars-count]','[abstract-submission-max-attach-size]');
 	$subst = array($html,get_option('abstracts_chars_count'),get_option('abstracts_maximum_attach_size'));
-	return str_replace($tags,$subst,$content);
+	if($_POST['abs_text']) {
+		return $html;
+	} else {
+		return str_replace($tags,$subst,$content);
+	}
 }
 
 function abstracts_download_file() {
@@ -69,7 +87,7 @@ function abstracts_download_pdf_file() {
 	global $wpdb;
 	if($_GET['abstracts_download_pdf_file']) {
 		$file = $wpdb->get_row("SELECT * FROM ".$wpdb->prefix."submitted_abstracts where id=".$_GET['abstracts_download_pdf_file']);
-		$content = stripslashes($file->html);
+		$content = utf8_decode(stripslashes($file->html));
 
 		require_once("dompdf-0.5.1/dompdf_config.inc.php");
 		
@@ -89,8 +107,12 @@ function abstracts_install() {
 
    $table_name = $wpdb->prefix."submitted_abstracts";
    
+   //$wpdb->query("drop table ".$table_name);
+   
       $sql = "CREATE TABLE ".$table_name." (
 		  id int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+		  name varchar(255),
+		  email varchar(255),
 		  title longblob,
 		  authors longblob,
 		  author_affiliation longblob,
@@ -104,6 +126,8 @@ function abstracts_install() {
       dbDelta($sql);
 
 	$table_name = $wpdb->prefix."abstracts_attachments";
+
+   //$wpdb->query("drop table ".$table_name);
 
       $sql = "CREATE TABLE ".$table_name." (
 	  	id int(11) UNSIGNED NOT NULL AUTO_INCREMENT,

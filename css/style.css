@@ -1,0 +1,43 @@
+.abstract_form_explanation {
+	font-style: italic;
+	margin-bottom: 5px;
+}
+
+.abstract_form_add_attachments {
+	padding-left: 20px;
+	background: url(../images/attach.png) left center no-repeat;
+	margin: 10px;
+	cursor: pointer;
+	line-height: 20px;
+}
+
+.abstract_form_add_coauthor {
+	padding-left: 20px;
+	background: url(../images/user.png) left center no-repeat;
+	margin: 10px;
+	cursor: pointer;
+	line-height: 20px;
+}
+
+.abstract_form_attachment {
+	height: 30px;
+}
+
+.abstract_attachment_row {
+	height: 30px;
+	line-height:30px;
+}
+
+.abstract_form_error {
+	color: #ff0000;
+	font-weight: bold;
+}
+
+.abstract_form_table_label {
+	text-align: left;
+	width: 100px;
+}
+
+.abstract_form_table_row {
+	height: 25px;
+}

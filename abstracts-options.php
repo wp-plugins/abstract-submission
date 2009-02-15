@@ -61,6 +61,14 @@ if($_POST) {
 		<th scope="row"><label for="options[abstracts_text_style]">Text Style (CSS)</label></th> 
 		<td><textarea class="large-text code" cols="50" rows="10" name="options[abstracts_text_style]"><?=stripslashes(get_option('abstracts_text_style'));?></textarea></td> 
 	</tr> 
+	<tr valign="top"> 
+		<th scope="row"><label for="options[abstracts_html_header]">Abstract HTML Header</label></th> 
+		<td><textarea class="large-text code" cols="50" rows="10" name="options[abstracts_html_header]"><?=stripslashes(get_option('abstracts_html_header'));?></textarea></td> 
+	</tr>
+	<tr valign="top"> 
+		<th scope="row"><label for="options[abstracts_redirect_page]">Redirect Page</label></th> 
+		<td><input name="options[abstracts_redirect_page]" type="text" value="<?=get_option('abstracts_redirect_page');?>" class="regular-text" /></td> 
+	</tr>
 </table> 
  
 <p class="submit"> 
