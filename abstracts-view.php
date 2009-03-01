@@ -8,15 +8,20 @@ if($_GET['delete']=='true') {
 		<div id="message" class="updated fade"><p><strong>Abstract #<?=$_GET['id']?> deleted.</strong></p></div>	
 <? }
 
-$abstracts = $wpdb->get_results("SELECT SQL_CALC_FOUND_ROWS * FROM ".$wpdb->prefix."submitted_abstracts ORDER BY data DESC LIMIT 20");
+$per_page = 20;
+
+$abs_current_page = ($_GET['pagenum']) ? $_GET['pagenum'] : 1;
+
+$abstracts = $wpdb->get_results("SELECT SQL_CALC_FOUND_ROWS * FROM ".$wpdb->prefix."submitted_abstracts ORDER BY data DESC LIMIT ".(($abs_current_page-1)*$per_page).",".$per_page);
 
 $abs_tot = $wpdb->get_var("SELECT FOUND_ROWS()");
 
 if($abs_tot>20) {
+	$abs_pages = ceil($abs_tot/20);
 	$abs_page_start = 1;
 	$abs_page_end = 20;
 } else {
-	$abs_page_start = 1;
+	$abs_page_start = ($abs_current_page-1)*$per_page;
 	$abs_page_end = $abs_tot;
 }
 
@@ -42,11 +47,17 @@ if($abs_tot>20) {
 -->
 <div class="tablenav"> 
  
-<div class="tablenav-pages"><span class="displaying-num">Showing <?=$abs_page_start?>&#8211;<?=$abs_page_end?> of <?=$abs_tot?></span>
-<? if($abs_tot>20) { ?>
-<span class='page-numbers current'>1</span> 
-<a class='page-numbers' href='/wp-admin/edit-pages.php?pagenum=2'>2</a> 
-<a class='next page-numbers' href='/wp-admin/edit-pages.php?pagenum=2'>&raquo;</a>
+<div class="tablenav-pages"><span class="displaying-num">Displaying <?=$abs_page_start?>&#8211;<?=$abs_page_end?> of <?=$abs_tot?></span>
+<? if($abs_tot>$per_page) { ?>
+<a class='prev page-numbers' href='/wp-admin/admin.php?page=mail2list/mail2list.php&pagenum=<?=($abs_current_page-1)?>'>&laquo;</a>
+<? for($i=1; $i<=$abs_pages; $i++) { ?>
+<? if($abs_current_page == $i) { ?>
+	<span class='page-numbers current'><?=$i?></span> 
+<? } else { ?>
+<a class='page-numbers' href='/wp-admin/admin.php?page=abstract-submission/abstract-submission.php&pagenum=<?=$i?>'><?=$i?></a>
+<? } ?>
+<? } ?>
+<a class='next page-numbers' href='/wp-admin/admin.php?page=abstract-submission/abstract-submission.php&pagenum=<?=$abs_pages?>'>&raquo;</a>
 <? } ?>
 </div> 
  
