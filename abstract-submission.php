@@ -1,9 +1,9 @@
 <?php
 /*
 Plugin Name: Abstract Submission
-Plugin URI: 
+Plugin URI: http://www.xgear.info/
 Description: Abstract Submission let you add an abstract submission form to your meeting website.
-Version: 0.2
+Version: 0.3
 Author: Marco Piccardo
 Author URI: http://www.xgear.info/
 */
