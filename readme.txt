@@ -3,7 +3,7 @@ Contributors: xgear
 Donate link: http://www.xgear.info/
 Tags: abstracts, submission, conference, meeting, pdf, attachments
 Requires at least: 2.2
-Tested up to: 2.7
+Tested up to: 2.7.1
 Stable tag: 0.5
 
 Abstract Submission let you add an abstract submission form to your meeting website.
