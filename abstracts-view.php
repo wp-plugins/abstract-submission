@@ -49,7 +49,7 @@ if($abs_tot>20) {
  
 <div class="tablenav-pages"><span class="displaying-num">Displaying <?=$abs_page_start?>&#8211;<?=$abs_page_end?> of <?=$abs_tot?></span>
 <? if($abs_tot>$per_page) { ?>
-<a class='prev page-numbers' href='/wp-admin/admin.php?page=mail2list/mail2list.php&pagenum=<?=($abs_current_page-1)?>'>&laquo;</a>
+<a class='prev page-numbers' href='/wp-admin/admin.php?page=abstract-submission/abstract-submission.php&pagenum=<?=($abs_current_page-1)?>'>&laquo;</a>
 <? for($i=1; $i<=$abs_pages; $i++) { ?>
 <? if($abs_current_page == $i) { ?>
 	<span class='page-numbers current'><?=$i?></span> 

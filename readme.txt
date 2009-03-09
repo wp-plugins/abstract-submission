@@ -2,9 +2,9 @@
 Contributors: xgear
 Donate link: http://www.xgear.info/
 Tags: abstracts, submission, conference, meeting, pdf, attachments
-Requires at least: 2.1
+Requires at least: 2.2
 Tested up to: 2.7
-Stable tag: 0.3
+Stable tag: 0.5
 
 Abstract Submission let you add an abstract submission form to your meeting website.
 
@@ -18,6 +18,14 @@ With Abstract Submission you can add an abstract submission form to your meeting
 * Support attachments like images, tables and more
 * Admin panel to review submitted abstracts
 * Configure maximum attachment size, supported formats and maximum abstract lenght (chars)
+
+**New in this version: 0.5**
+
+* Separate JS file to improve compatibility with other plugins *(thanks to Pablo)*
+* Added a templetized confirmation email to the author
+* Added an alert email to the administrator when an abstract was submitted
+* WYSIWYG Editors for template and HTML header
+* Solved minor bugs
 
 == Installation ==
 

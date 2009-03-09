@@ -3,19 +3,9 @@
 Plugin Name: Abstract Submission
 Plugin URI: http://www.xgear.info/
 Description: Abstract Submission let you add an abstract submission form to your meeting website.
-Version: 0.3
+Version: 0.5
 Author: Marco Piccardo
 Author URI: http://www.xgear.info/
-*/
-
-/* Changelog - Release Notes
-
-* v0.2
-- First Public Version.
-
-* v0.1
-- First non-Public Version.
-
 */
 
 /* Usage
@@ -52,7 +42,8 @@ function abstracts_options_page() {
 }
 
 function abstracts_css() {  
-	echo '<link type="text/css" rel="stylesheet" href="'.get_bloginfo('wpurl').'/wp-content/plugins/abstract-submission/css/style.css" />' . "\n";  
+	echo '<link type="text/css" rel="stylesheet" href="'.get_bloginfo('wpurl').'/wp-content/plugins/abstract-submission/css/style.css" />' . "\n";
+	echo '<script type="text/javascript" src="'.get_bloginfo('wpurl').'/wp-content/plugins/abstract-submission/js/scripts.js" ></script>' . "\n";  
 } 
 
 function abstracts_submission_page($content) {
@@ -144,6 +135,7 @@ function abstracts_install() {
 
 	add_option("abstracts_chars_count", 5000);
 	add_option("abstracts_maximum_attach_size", 512000);
+	add_option("abstracts_mail_template", "Dear [AUTHOR],<br>You have correctly submitted your abstract:<br><strong>[ABSTRACT_TITLE]</strong><br><br>Best Regards,<br><em>[BLOGTITLE]</em>");
 	
 }
 

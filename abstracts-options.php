@@ -25,7 +25,9 @@ if($_POST) {
 <div class="wrap"> 
 	<div id="icon-options-general" class="icon32"><br /></div> 
 <h2>Abstracts Options</h2> 
- 
+
+<script src="<? bloginfo('siteurl'); ?>/wp-content/plugins/abstract-submission/js/nicEdit.js" type="text/javascript"></script>
+
 <form method="post" action="<?=$_SERVER['REQUEST_URI']?>"> 
 
 <table class="form-table"> 
@@ -63,11 +65,15 @@ if($_POST) {
 	</tr> 
 	<tr valign="top"> 
 		<th scope="row"><label for="options[abstracts_html_header]">Abstract HTML Header</label></th> 
-		<td><textarea class="large-text code" cols="50" rows="10" name="options[abstracts_html_header]"><?=stripslashes(get_option('abstracts_html_header'));?></textarea></td> 
+		<td><textarea id="abstracts_html_header" class="large-text code" cols="50" rows="10" name="options[abstracts_html_header]"><?=stripslashes(get_option('abstracts_html_header'));?></textarea></td> 
 	</tr>
 	<tr valign="top"> 
 		<th scope="row"><label for="options[abstracts_redirect_page]">Redirect Page</label></th> 
 		<td><input name="options[abstracts_redirect_page]" type="text" value="<?=get_option('abstracts_redirect_page');?>" class="regular-text" /></td> 
+	</tr>
+	<tr valign="top"> 
+		<th scope="row"><label for="options[abstracts_mail_template]">Confirmation Mail Template</label><br/>Tags: <em>[AUTHOR], [ABSTRACT_TITLE], [BLOGTITLE]</em></th> 
+		<td><textarea id="abstracts_mail_template" class="large-text code" cols="50" rows="10" name="options[abstracts_mail_template]"><?=stripslashes(get_option('abstracts_mail_template'));?></textarea></td> 
 	</tr>
 </table> 
  
@@ -75,5 +81,8 @@ if($_POST) {
 <input type="submit" name="Submit" class="button-primary" value="Save options" /> 
 </p> 
 </form> 
- 
+<script type="text/javascript">
+	new nicEditor({iconsPath : '<? bloginfo('siteurl'); ?>/wp-content/plugins/abstract-submission/images/nicEditorIcons.gif'}).panelInstance('abstracts_html_header');
+	new nicEditor({iconsPath : '<? bloginfo('siteurl'); ?>/wp-content/plugins/abstract-submission/images/nicEditorIcons.gif'}).panelInstance('abstracts_mail_template');
+</script> 
 </div>

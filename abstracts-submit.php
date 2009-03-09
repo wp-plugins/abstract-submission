@@ -3,8 +3,10 @@
 require_once("dompdf-0.5.1/dompdf_config.inc.php");
 if ( isset( $_POST["abs_text"] ) ) {
 
-  if ( get_magic_quotes_gpc() )
+  if ( get_magic_quotes_gpc() ) {
     $_POST["abs_text"] = stripslashes($_POST["abs_text"]);
+    $_POST["abs_title"] = stripslashes($_POST["abs_text"]);
+  }
 
   //$old_limit = ini_set("memory_limit", "16M");
   
@@ -73,7 +75,31 @@ if ( isset( $_POST["abs_text"] ) ) {
   $wpdb->show_errors();
   $wpdb->query($wpdb->prepare("INSERT INTO ".$wpdb->prefix."submitted_abstracts (title,authors,author_affiliation,text,html,name,email,presentation_mode,data) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,NOW())",$abs_title,$abs_authors,$abs_affiliations,$_POST["abs_text"],$html,$_POST["your_firstname"].' '.$_POST["your_lastname"],$_POST["your_email"],$_POST["your_preference"]));
   $abstract_id = $wpdb->insert_id;
-  
+
+	require_once(ABSPATH."wp-includes/class-phpmailer.php");
+	require_once(ABSPATH."wp-includes/class-smtp.php");
+	
+	$keys = array('[AUTHOR]','[ABSTRACT_TITLE]','[BLOGTITLE]');
+	$values = array($_POST["your_firstname"].' '.$_POST["your_lastname"], $abs_title, get_option('blogname'));
+	
+	$mail = new PHPMailer();
+	$mail->IsHTML(true);
+	$mail->AddAddress($_POST["your_email"]);
+	$mail->Body = str_replace($keys, $values, get_option('abstracts_mail_template'));
+	$mail->From = get_option('admin_email');
+	$mail->FromName = get_option('blogname');
+	$mail->Subject = 'Abstract Submission - '.get_option('blogname');
+	$mail->Send();
+
+	$mail = new PHPMailer();
+	$mail->IsHTML(true);
+	$mail->AddAddress(get_option('admin_email'));
+	$mail->Body = 'You have a new abstract for \''.get_option('blogname').'\'<br/><br/>Author(s): '.$abs_authors.'<br/>Title: <strong>'.$abs_title.'</strong><br/><br/><a href="'.get_option('siteurl').'/wp-admin/admin.php?page=abstract-submission/abstracts-view-abstract.php&id='.$abstract_id.'">Click here to view the abstract</a>.';
+	$mail->From = $_POST["your_email"];
+	$mail->FromName = $_POST["your_firstname"].' '.$_POST["your_lastname"];
+	$mail->Subject = 'New Abstract Submitted';
+	$mail->Send();
+
   if($_FILES) {
   	foreach($_FILES['attachments']['error'] as $key=>$error) {
   		if($error==0) {
@@ -122,181 +148,6 @@ if ( isset( $_POST["abs_text"] ) ) {
 <h2><a href="<?=get_permalink(get_option('abstracts_redirect_page'))?>">Complete your submission &raquo;</a></h2>
 	<div class="abstract_form_explanation">Click the above link to complete the abstract submission process.</strong></div>
 <? } else { ?>
-<script>
-/* This script and many more are available free online at
-The JavaScript Source!! http://javascript.internet.com
-Created by: Steve | http://jsmadeeasy.com/ */
-function getObject(obj) {
-  var theObj;
-  if(document.all) {
-    if(typeof obj=="string") {
-      return document.all(obj);
-    } else {
-      return obj.style;
-    }
-  }
-  if(document.getElementById) {
-    if(typeof obj=="string") {
-      return document.getElementById(obj);
-    } else {
-      return obj.style;
-    }
-  }
-  return null;
-}
-
-function toCount(entrance,exit,text,characters) {
-  var entranceObj=getObject(entrance);
-  var exitObj=getObject(exit);
-  var length=characters - entranceObj.value.length;
-  if(length <= 0) {
-    length=0;
-    text='<span class="disable"> '+text+' </span>';
-    entranceObj.value=entranceObj.value.substr(0,characters);
-  }
-  exitObj.innerHTML = text.replace("{CHAR}",length);
-}
-
-function abstracts_add_attachment() {
-   var container = document.createElement('div');
-   container.setAttribute('class','abstract_form_attachment');
-   
-   var input = document.createElement('input');
-   input.setAttribute('type','file');
-   input.setAttribute('name','attachments[]');
-   
-   container.appendChild(input);
-
-   document.getElementById('abstract_form_attachments').appendChild(container); 
-}
-
-function check_abstract_form() {
-	var errors = false;
-	if(document.getElementById('abs_title').value=='') {
-		errors = true;
-		document.getElementById('abs_title_error').style.display='inline';
-	} else {
-		document.getElementById('abs_title_error').style.display='none';
-	}
-	if(document.getElementById('abs_authors').value=='') {
-		errors = true;
-		document.getElementById('abs_authors_error').style.display='inline';
-	} else {
-		document.getElementById('abs_authors_error').style.display='none';
-	}
-	if(document.getElementById('abs_affiliation').value=='') {
-		errors = true;
-		document.getElementById('abs_authors_error').style.display='inline';
-	} else {
-		document.getElementById('abs_authors_error').style.display='none';
-	}
-	if(document.getElementById('eBann').value=='') {
-		errors = true;
-		document.getElementById('abs_text_error').style.display='inline';
-	} else {
-		document.getElementById('abs_text_error').style.display='none';
-	}
-	if(document.getElementById('abs_name').value=='') {
-		errors = true;
-		document.getElementById('abs_name_error').style.display='inline';
-	} else {
-		document.getElementById('abs_name_error').style.display='none';
-	}
-	if(document.getElementById('abs_email').value=='') {
-		errors = true;
-		document.getElementById('abs_email_error').style.display='inline';
-	} else {
-		document.getElementById('abs_email_error').style.display='none';
-	}
-	if(errors) {
-		alert('Please fill in all required fields.');
-	} else {
-		document.getElementById('abs_form').submit();
-	}
-}
-
-abs_coauthor = 1;
-
-function abstracts_add_coauthor(){
-	var tr_name = document.createElement("TR")
-	tr_name.setAttribute('class','abstract_form_table_row');
-	   var td_name_label = document.createElement("TD")
-	   td_name_label.setAttribute('class','abstract_form_table_label');
-	   td_name_label.appendChild(document.createTextNode('Firstname'));
-	   tr_name.appendChild(td_name_label);
-	   var td_name_input = document.createElement("TD")
-		   var input_name_input = document.createElement("INPUT")
-		   input_name_input.setAttribute('type','text');
-		   input_name_input.setAttribute('name','abs_author_firstname['+abs_coauthor+']');
-		   input_name_input.setAttribute('style','width:200px;');
-		   input_name_input.setAttribute('id','abs_authors_firstname'+abs_coauthor);
-		   td_name_input.appendChild(input_name_input);
-	   tr_name.appendChild(td_name_input);
-
-    document.getElementById('abstract_coauthors_table').appendChild(tr_name);
-
-	var tr_name = document.createElement("TR")
-	tr_name.setAttribute('class','abstract_form_table_row');
-	   var td_name_label = document.createElement("TD")
-	   td_name_label.setAttribute('class','abstract_form_table_label');
-	   td_name_label.appendChild(document.createTextNode('Lastname'));
-	   tr_name.appendChild(td_name_label);
-	   var td_name_input = document.createElement("TD")
-		   var input_name_input = document.createElement("INPUT")
-		   input_name_input.setAttribute('type','text');
-		   input_name_input.setAttribute('name','abs_author_lastname['+abs_coauthor+']');
-		   input_name_input.setAttribute('style','width:200px;');
-		   input_name_input.setAttribute('id','abs_authors_lastname'+abs_coauthor);
-		   td_name_input.appendChild(input_name_input);
-	   tr_name.appendChild(td_name_input);
-
-    document.getElementById('abstract_coauthors_table').appendChild(tr_name);
-
-	var tr_name = document.createElement("TR")
-	tr_name.setAttribute('class','abstract_form_table_row');
-	   var td_name_label = document.createElement("TD")
-	   td_name_label.setAttribute('class','abstract_form_table_label');
-	   td_name_label.appendChild(document.createTextNode('Affiliation'));
-	   tr_name.appendChild(td_name_label);
-	   var td_name_input = document.createElement("TD")
-		   var input_name_input = document.createElement("INPUT")
-		   input_name_input.setAttribute('type','text');
-		   input_name_input.setAttribute('name','abs_affiliation['+abs_coauthor+']');
-		   input_name_input.setAttribute('style','width:100%;');
-		   td_name_input.appendChild(input_name_input);
-	   tr_name.appendChild(td_name_input);
-
-    document.getElementById('abstract_coauthors_table').appendChild(tr_name);
-
-	var tr_name = document.createElement("TR")
-	tr_name.setAttribute('class','abstract_form_table_row');
-	   var td_name_label = document.createElement("TD")
-	   td_name_label.setAttribute('class','abstract_form_table_label');
-	   tr_name.appendChild(td_name_label);
-	   var td_name_input = document.createElement("TD")
-		   td_name_input.appendChild(document.createTextNode('Is this author the presenter? '));
-		   var input_name_input = document.createElement("INPUT")
-		   input_name_input.setAttribute('type','checkbox');
-		   input_name_input.setAttribute('name','abs_presenter['+abs_coauthor+']');
-		   input_name_input.setAttribute('value','1');
-		   td_name_input.appendChild(input_name_input);
-	   tr_name.appendChild(td_name_input);
-
-    document.getElementById('abstract_coauthors_table').appendChild(tr_name);
-	
-	abs_coauthor = (abs_coauthor+1);
-}
-
-function set_presenter(firstname,lastname) {
-	alert('sdasda');
-	if(document.getElementById('abs_name').value!='') {
-		document.getElementById('abs_name').value = document.getElementById(lastname).value;
-		document.getElementById('abs_firstname').value = document.getElementById(firstname).value;
-	}
-}
-
-</script>
-
 <form method="post" enctype="multipart/form-data" id="abs_form">
 <h2>Abstract</h2>
 	<h4><strong>* Title <span class="abstract_form_error" style="display: none;" id="abs_title_error">Required field.</span></strong></h4>
