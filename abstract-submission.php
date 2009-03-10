@@ -3,7 +3,7 @@
 Plugin Name: Abstract Submission
 Plugin URI: http://www.xgear.info/
 Description: Abstract Submission let you add an abstract submission form to your meeting website.
-Version: 0.5
+Version: 0.6
 Author: Marco Piccardo
 Author URI: http://www.xgear.info/
 */
@@ -53,7 +53,7 @@ function abstracts_submission_page($content) {
 	$html = ob_get_clean();
 	$tags = array('[abstract-submission-form]','[abstract-submission-chars-count]','[abstract-submission-max-attach-size]');
 	$subst = array($html,get_option('abstracts_chars_count'),get_option('abstracts_maximum_attach_size'));
-	if($_POST['abs_text']) {
+	if(!empty($_POST['abs_text']) && $_POST['abs_text']) {
 		return $html;
 	} else {
 		return str_replace($tags,$subst,$content);
@@ -62,7 +62,7 @@ function abstracts_submission_page($content) {
 
 function abstracts_download_file() {
 	global $wpdb;
-	if($_GET['abstracts_download_file']) {
+	if(!empty($_GET['abstracts_download_file']) && $_GET['abstracts_download_file']) {
 		$file = $wpdb->get_row("SELECT * FROM ".$wpdb->prefix."abstracts_attachments where id=".$_GET['abstracts_download_file']);
 		$content = rawurldecode($file->filecontent);
 
@@ -76,7 +76,7 @@ function abstracts_download_file() {
 
 function abstracts_download_pdf_file() {
 	global $wpdb;
-	if($_GET['abstracts_download_pdf_file']) {
+	if(!empty($_GET['abstracts_download_pdf_file']) && $_GET['abstracts_download_pdf_file']) {
 		$file = $wpdb->get_row("SELECT * FROM ".$wpdb->prefix."submitted_abstracts where id=".$_GET['abstracts_download_pdf_file']);
 		$content = utf8_decode(stripslashes($file->html));
 
@@ -135,7 +135,7 @@ function abstracts_install() {
 
 	add_option("abstracts_chars_count", 5000);
 	add_option("abstracts_maximum_attach_size", 512000);
-	add_option("abstracts_mail_template", "Dear [AUTHOR],<br>You have correctly submitted your abstract:<br><strong>[ABSTRACT_TITLE]</strong><br><br>Best Regards,<br><em>[BLOGTITLE]</em>");
+	add_option("abstracts_mail_template", "Dear [AUTHOR],<br/>You have correctly submitted your abstract:<br/><strong>[ABSTRACT_TITLE]</strong><br/><br/>Best Regards,<br/><em>[BLOGTITLE]</em>");
 	
 }
 

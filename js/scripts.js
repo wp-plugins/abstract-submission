@@ -163,7 +163,6 @@ function abstracts_add_coauthor(){
 }
 
 function set_presenter(firstname,lastname) {
-	alert('sdasda');
 	if(document.getElementById('abs_name').value!='') {
 		document.getElementById('abs_name').value = document.getElementById(lastname).value;
 		document.getElementById('abs_firstname').value = document.getElementById(firstname).value;

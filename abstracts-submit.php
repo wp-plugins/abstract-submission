@@ -5,7 +5,7 @@ if ( isset( $_POST["abs_text"] ) ) {
 
   if ( get_magic_quotes_gpc() ) {
     $_POST["abs_text"] = stripslashes($_POST["abs_text"]);
-    $_POST["abs_title"] = stripslashes($_POST["abs_text"]);
+    $_POST["abs_title"] = stripslashes($_POST["abs_title"]);
   }
 
   //$old_limit = ini_set("memory_limit", "16M");
