@@ -18,14 +18,11 @@ With Abstract Submission you can add an abstract submission form to your meeting
 * Support attachments like images, tables and more
 * Admin panel to review submitted abstracts
 * Configure maximum attachment size, supported formats and maximum abstract lenght (chars)
+* Send confirmations email to you and to authors with a custom mail template
 
-**New in this version: 0.5**
+**New in this version: 0.6**
 
-* Separate JS file to improve compatibility with other plugins *(thanks to Pablo)*
-* Added a templetized confirmation email to the author
-* Added an alert email to the administrator when an abstract was submitted
-* WYSIWYG Editors for template and HTML header
-* Solved minor bugs
+* Solved minor bugs *(thanks to Pablo)*
 
 == Installation ==
 
